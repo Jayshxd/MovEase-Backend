@@ -11,7 +11,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@RequiredArgsConstructor
+//RequiredArgsConstructor
 @Entity
 @Table(name = "seats")
 
