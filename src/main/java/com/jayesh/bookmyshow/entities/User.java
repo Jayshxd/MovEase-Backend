@@ -34,6 +34,6 @@ public class User {
         this.password = password;
     }
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private Set<Booking> bookings;
 }

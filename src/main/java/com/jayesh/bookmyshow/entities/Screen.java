@@ -32,9 +32,9 @@ public class Screen {
     @JoinColumn(name = "theatre_id")
     private Theatre theatre;
 
-    @OneToMany(mappedBy = "screen")
+    @OneToMany(mappedBy = "screen",cascade = CascadeType.ALL)
     private Set<Show> shows;
 
-    @OneToMany(mappedBy = "screen")
+    @OneToMany(mappedBy = "screen",cascade = CascadeType.ALL)
     private Set<Seat> seats;
 }

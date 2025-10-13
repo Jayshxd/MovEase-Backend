@@ -32,6 +32,6 @@ public class Seat {
     @JoinColumn(name = "screen_id")
     private Screen screen;
 
-    @OneToMany(mappedBy = "seat")
+    @OneToMany(mappedBy = "seat",cascade = CascadeType.ALL)
     private Set<ShowSeat> showSeats;
 }

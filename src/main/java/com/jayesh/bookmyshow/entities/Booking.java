@@ -41,7 +41,7 @@ public class Booking {
     private Show show;
 
 
-    @OneToMany(mappedBy = "booking")
+    @OneToMany(mappedBy = "booking",cascade = CascadeType.ALL)
     private Set<ShowSeat> showSeats;
 
 }

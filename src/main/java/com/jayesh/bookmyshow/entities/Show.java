@@ -41,11 +41,11 @@ public class Show {
     @JoinColumn(name = "screen_id")
     private Screen screen;
 
-    @OneToMany(mappedBy = "show")
+    @OneToMany(mappedBy = "show",cascade = CascadeType.ALL)
     private Set<Booking> bookings;
 
 
-    @OneToMany(mappedBy = "show")
+    @OneToMany(mappedBy = "show",cascade = CascadeType.ALL)
     private Set<ShowSeat> showSeats;
 
 }
