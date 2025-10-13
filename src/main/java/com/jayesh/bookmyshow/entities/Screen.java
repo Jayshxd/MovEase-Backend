@@ -13,22 +13,28 @@ import java.util.Set;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Entity
-@Table(name = "theatres")
-public class Theatre {
+@Table(name = "screens")
+
+public class Screen {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
-    private String city;
-    private String address;
+    private int totalSeats;
 
-    public Theatre(String name, String city, String address) {
+    public Screen(String name, int totalSeats) {
         this.name = name;
-        this.city = city;
-        this.address = address;
+        this.totalSeats = totalSeats;
     }
 
-    @OneToMany(mappedBy = "theatre",cascade = CascadeType.ALL)
-    private Set<Screen> screens;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "theatre_id")
+    private Theatre theatre;
+
+    @OneToMany(mappedBy = "screen")
+    private Set<Show> shows;
+
+    @OneToMany(mappedBy = "screen")
+    private Set<Seat> seats;
 }
