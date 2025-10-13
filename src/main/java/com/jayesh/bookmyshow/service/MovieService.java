@@ -33,7 +33,7 @@ public class MovieService {
         newMovie.setTitle(req.getTitle());
         newMovie.setDuration(req.getDuration());
         newMovie.setReleaseDate(req.getReleaseDate());
-        newMovie.setDuration(req.getDuration());
+        newMovie.setDescription(req.getDescription());
         newMovie.setGenre(req.getGenre());
         newMovie.setLanguage(req.getLanguage());
         movieRepo.save(newMovie);
@@ -55,7 +55,7 @@ public class MovieService {
         Movie movie = movieRepo.findById(id).orElseThrow(()-> new EntityNotFoundException("Movie Not Found"));
         movie.setTitle(req.getTitle());
         movie.setDuration(req.getDuration());
-        movie.setDescription(req.getDuration());
+        movie.setDescription(req.getDescription());
         movie.setGenre(req.getGenre());
         movie.setLanguage(req.getLanguage());
         movie.setReleaseDate(req.getReleaseDate());
