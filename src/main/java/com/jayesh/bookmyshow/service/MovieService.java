@@ -9,8 +9,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,13 +20,39 @@ public class MovieService {
     private final MovieRepo movieRepo;
 
 
-    public List<MovieResponseDto> findMovies() {
+    public List<MovieResponseDto> findMovies(String title, String description, String genre, String language,String duration, LocalDate releaseDate
+    ) {
         List<Movie> movies = movieRepo.findAll();
-        List<MovieResponseDto> res = new ArrayList<>();
-        for (Movie movie : movies) {
-            res.add(new MovieResponseDto(movie));
+        if(title!=null && !title.isEmpty()){
+
+            movies = movies.stream().filter(movie -> movie.getTitle().toLowerCase().contains(title.toLowerCase())).toList();
+
         }
-        return res;
+        if(description!=null  && !description.isEmpty()){
+
+            movies=movies.stream().filter(movie -> movie.getDescription().toLowerCase().contains(description.toLowerCase())).toList();
+
+        }
+        if(genre!=null && !genre.isEmpty()){
+
+            movies=movies.stream().filter(movie -> movie.getGenre().toLowerCase().contains(genre.toLowerCase())).toList();
+
+        }
+        if(language!=null && !language.isEmpty()){
+
+            movies=movies.stream().filter(movie -> movie.getLanguage().toLowerCase().contains(language.toLowerCase())).toList();
+
+        }
+        if(releaseDate!=null){
+
+            movies=movies.stream().filter(movie -> movie.getReleaseDate().isAfter(releaseDate)).toList();
+
+        }if(duration!=null && !duration.isEmpty()) {
+
+            movies=movies.stream().filter(movie -> movie.getDuration().contains(duration.toLowerCase())).toList();
+
+        }
+        return movies.stream().map(MovieResponseDto::new).collect(Collectors.toList());
     }
 
 
@@ -42,12 +70,20 @@ public class MovieService {
 
     @Transactional
     public List<MovieResponseDto> createMoviesInBulk(List<MovieRequestDto> req) {
-        List<MovieResponseDto> res = new ArrayList<>();
-        for (MovieRequestDto movieRequestDto : req) {
-            MovieResponseDto resp = createMovie(movieRequestDto);
-            res.add(resp);
-        }
-        return res;
+        List<Movie> moviesToSave = req.stream().map(
+                dto->{
+                    Movie newMovie = new Movie();
+                    newMovie.setTitle(dto.getTitle());
+                    newMovie.setDuration(dto.getDuration());
+                    newMovie.setReleaseDate(dto.getReleaseDate());
+                    newMovie.setDescription(dto.getDescription());
+                    newMovie.setGenre(dto.getGenre());
+                    newMovie.setLanguage(dto.getLanguage());
+                    return newMovie;
+                }
+        ).toList();
+        List<Movie> savedMovies = movieRepo.saveAll(moviesToSave);
+        return savedMovies.stream().map(MovieResponseDto::new).collect(Collectors.toList());
     }
 
 
