@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -18,8 +19,15 @@ public class MovieController {
     private final MovieService movieService;
 
     @GetMapping
-    public ResponseEntity<List<MovieResponseDto>> get() {
-        List<MovieResponseDto> res = movieService.findMovies();
+    public ResponseEntity<List<MovieResponseDto>> get(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String description,
+            @RequestParam(required = false) String genre,
+            @RequestParam(required = false) String language,
+            @RequestParam(required = false) String duration,
+            @RequestParam(required = false) LocalDate releaseDate
+    ) {
+        List<MovieResponseDto> res = movieService.findMovies(title,description,genre,language,duration,releaseDate);
         return ResponseEntity.ok(res);
     }
 
