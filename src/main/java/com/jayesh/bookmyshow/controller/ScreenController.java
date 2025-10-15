@@ -4,8 +4,10 @@ import com.jayesh.bookmyshow.dto.request.ScreenRequestDto;
 import com.jayesh.bookmyshow.dto.request.SeatRequestDto;
 import com.jayesh.bookmyshow.dto.response.ScreenResponseDto;
 import com.jayesh.bookmyshow.dto.response.SeatResponseDto;
+import com.jayesh.bookmyshow.dto.response.ShowResponseDto;
 import com.jayesh.bookmyshow.service.ScreenService;
 import com.jayesh.bookmyshow.service.SeatService;
+import com.jayesh.bookmyshow.service.ShowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ public class ScreenController {
 
     private final ScreenService screenService;
     private final SeatService seatService;
+    private final ShowService showService;
 
     @GetMapping
     public ResponseEntity<List<ScreenResponseDto>> getALlTheScreens() {
@@ -65,6 +68,16 @@ public class ScreenController {
     public ResponseEntity<List<SeatResponseDto>> createSeat(@PathVariable Long id, @RequestBody List<SeatRequestDto> req) {
         List<SeatResponseDto> res = seatService.createSeatsInBulk(id, req);
         return ResponseEntity.status(HttpStatus.CREATED).body(res);
+    }
+
+
+
+    //shows........
+    @GetMapping("/{id}/shows")
+    public ResponseEntity<List<ShowResponseDto>> getAllShowsOfAScreen(@PathVariable Long id) {
+        List<ShowResponseDto> response = showService.findAllShowsOfAScreen(id);
+        return ResponseEntity.ok(response);
+
     }
 
 

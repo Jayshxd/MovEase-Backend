@@ -108,4 +108,8 @@ public class ShowService {
         screen.addShow(show);
         return show;
     }
+
+    public List<ShowResponseDto> findAllShowsOfAScreen(Long id) {
+        return showRepo.findALlShowsByScreenId(id).stream().map(ShowResponseDto::new).toList();
+    }
 }

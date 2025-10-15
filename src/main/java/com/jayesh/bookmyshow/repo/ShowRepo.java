@@ -1,5 +1,6 @@
 package com.jayesh.bookmyshow.repo;
 
+import com.jayesh.bookmyshow.dto.response.ShowResponseDto;
 import com.jayesh.bookmyshow.entities.Show;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -31,4 +32,6 @@ public interface ShowRepo extends JpaRepository<Show,Long> {
 
     @Query("SELECT sh FROM Show sh WHERE sh.screen.theatre.id = :theatreId")
     List<Show> findAllByTheatreId(@Param("theatreId") Long theatreId);
+
+    List<Show> findALlShowsByScreenId(Long screenId);
 }
