@@ -3,8 +3,10 @@ package com.jayesh.bookmyshow.controller;
 import com.jayesh.bookmyshow.dto.request.ScreenRequestDto;
 import com.jayesh.bookmyshow.dto.request.TheatreRequestDto;
 import com.jayesh.bookmyshow.dto.response.ScreenResponseDto;
+import com.jayesh.bookmyshow.dto.response.ShowResponseDto;
 import com.jayesh.bookmyshow.dto.response.TheatreResponseDto;
 import com.jayesh.bookmyshow.service.ScreenService;
+import com.jayesh.bookmyshow.service.ShowService;
 import com.jayesh.bookmyshow.service.TheatreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,7 @@ import java.util.List;
 public class TheatreController {
     private final TheatreService theatreService;
     private final ScreenService screenService;
+    private final ShowService showService;
 
     @GetMapping
     public ResponseEntity<List<TheatreResponseDto>> get(
@@ -103,6 +106,16 @@ public class TheatreController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         screenService.deleteAllScreensOfATheatre(id);
         return ResponseEntity.noContent().build();
+    }
+
+
+
+
+    //all shows in a theater
+    @GetMapping("/{id}/shows")
+    public ResponseEntity<List<ShowResponseDto>> getAllShowsInATheatre(@PathVariable Long id) {
+        List<ShowResponseDto> response =  showService.findAllShowsInATheatre(id);
+        return ResponseEntity.ok(response);
     }
 
 

@@ -5,16 +5,21 @@ import com.jayesh.bookmyshow.dto.response.ShowResponseDto;
 import com.jayesh.bookmyshow.entities.Movie;
 import com.jayesh.bookmyshow.entities.Screen;
 import com.jayesh.bookmyshow.entities.Show;
+import com.jayesh.bookmyshow.entities.Theatre;
 import com.jayesh.bookmyshow.repo.MovieRepo;
 import com.jayesh.bookmyshow.repo.ScreenRepo;
 import com.jayesh.bookmyshow.repo.ShowRepo;
+import com.jayesh.bookmyshow.repo.TheatreRepo;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -23,6 +28,7 @@ public class ShowService {
     private final ShowRepo  showRepo;
     private final MovieRepo movieRepo;
     private final ScreenRepo screenRepo;
+    private final TheatreRepo theatreRepo;
 
     public ShowResponseDto createShow(ShowRequestDto req){
         Show show = new Show();
@@ -79,6 +85,13 @@ public class ShowService {
 
     public List<ShowResponseDto> findAllShowsForAMovie(Long id) {
         return showRepo.findAllShowsByMovieId(id).stream().map(ShowResponseDto::new).toList();
+    }
+
+    public List<ShowResponseDto> findAllShowsInATheatre(Long id) {
+        if(!theatreRepo.existsById(id)){
+            throw new EntityNotFoundException("Theatre Not Found of id -> "+id);
+        }
+        return showRepo.findAllByTheatreId(id).stream().map(ShowResponseDto::new).toList();
     }
 
 
