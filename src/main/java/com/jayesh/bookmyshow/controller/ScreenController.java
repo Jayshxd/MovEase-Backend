@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -74,8 +75,8 @@ public class ScreenController {
 
     //shows........
     @GetMapping("/{id}/shows")
-    public ResponseEntity<List<ShowResponseDto>> getAllShowsOfAScreen(@PathVariable Long id) {
-        List<ShowResponseDto> response = showService.findAllShowsOfAScreen(id);
+    public ResponseEntity<List<ShowResponseDto>> getAllShowsOfAScreen(@PathVariable Long id,@RequestParam LocalDate showDate) {
+        List<ShowResponseDto> response = showService.findAllShowsOfAScreen(id,showDate);
         return ResponseEntity.ok(response);
 
     }

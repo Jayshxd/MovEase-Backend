@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Getter
@@ -15,6 +16,7 @@ import java.time.LocalTime;
 public class ShowResponseDto {
 
     private Long showId;
+    private LocalDate showDate;
     private LocalTime showTime;
     private double ticketPrice;
     private Long movieId;
@@ -22,6 +24,7 @@ public class ShowResponseDto {
 
     public ShowResponseDto(Show show){
         this.showId = show.getId();
+        this.showDate = show.getShowDate();
         this.showTime=show.getShowTime();
         this.ticketPrice=show.getTicketPrice();
         this.movieId=show.getMovie().getId();

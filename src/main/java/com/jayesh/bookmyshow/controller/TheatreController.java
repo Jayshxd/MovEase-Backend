@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -113,8 +114,8 @@ public class TheatreController {
 
     //all shows in a theater
     @GetMapping("/{id}/shows")
-    public ResponseEntity<List<ShowResponseDto>> getAllShowsInATheatre(@PathVariable Long id) {
-        List<ShowResponseDto> response =  showService.findAllShowsInATheatre(id);
+    public ResponseEntity<List<ShowResponseDto>> getAllShowsInATheatre(@PathVariable Long id,@RequestParam LocalDate date) {
+        List<ShowResponseDto> response =  showService.findAllShowsInATheatre(id, date);
         return ResponseEntity.ok(response);
     }
 

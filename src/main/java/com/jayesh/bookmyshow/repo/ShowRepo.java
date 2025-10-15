@@ -30,8 +30,12 @@ public interface ShowRepo extends JpaRepository<Show,Long> {
 
     List<Show> findAllShowsByMovieId(Long movieId);
 
-    @Query("SELECT sh FROM Show sh WHERE sh.screen.theatre.id = :theatreId")
-    List<Show> findAllByTheatreId(@Param("theatreId") Long theatreId);
+    @Query("SELECT sh FROM Show sh WHERE sh.screen.theatre.id = :theatreId AND sh.showDate = :showDate")
 
-    List<Show> findALlShowsByScreenId(Long screenId);
+    List<Show> findAllShowsByTheatreIdAndShowDate(@Param("theatreId") Long theatreId,
+                                                  @Param("showDate") LocalDate showDate);
+
+    List<Show> findALlShowsByScreenIdAndShowDate(Long screenId, LocalDate showDate);
+
+    LocalDate showDate(LocalDate showDate);
 }

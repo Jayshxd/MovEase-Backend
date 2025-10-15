@@ -87,11 +87,11 @@ public class ShowService {
         return showRepo.findAllShowsByMovieId(id).stream().map(ShowResponseDto::new).toList();
     }
 
-    public List<ShowResponseDto> findAllShowsInATheatre(Long id) {
+    public List<ShowResponseDto> findAllShowsInATheatre(Long id,LocalDate date) {
         if(!theatreRepo.existsById(id)){
             throw new EntityNotFoundException("Theatre Not Found of id -> "+id);
         }
-        return showRepo.findAllByTheatreId(id).stream().map(ShowResponseDto::new).toList();
+        return showRepo.findAllShowsByTheatreIdAndShowDate(id,date).stream().map(ShowResponseDto::new).toList();
     }
 
 
@@ -109,7 +109,7 @@ public class ShowService {
         return show;
     }
 
-    public List<ShowResponseDto> findAllShowsOfAScreen(Long id) {
-        return showRepo.findALlShowsByScreenId(id).stream().map(ShowResponseDto::new).toList();
+    public List<ShowResponseDto> findAllShowsOfAScreen(Long id,LocalDate showDate) {
+        return showRepo.findALlShowsByScreenIdAndShowDate(id,showDate).stream().map(ShowResponseDto::new).toList();
     }
 }
