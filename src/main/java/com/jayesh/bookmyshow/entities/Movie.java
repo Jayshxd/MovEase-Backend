@@ -42,6 +42,16 @@ public class Movie {
         this.releaseDate = releaseDate;
     }
 
-    @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Show> shows;
+
+    //helper
+    public void addShow(Show show){
+        this.shows.add(show);
+        show.setMovie(this);
+    }
+    public void removeShow(Show show){
+        this.shows.remove(show);
+        show.setMovie(null);
+    }
 }

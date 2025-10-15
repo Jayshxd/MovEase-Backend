@@ -19,7 +19,6 @@ public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String seatNumber;
     private String seatType;
 
@@ -32,6 +31,16 @@ public class Seat {
     @JoinColumn(name = "screen_id")
     private Screen screen;
 
-    @OneToMany(mappedBy = "seat",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "seat",cascade = CascadeType.ALL,orphanRemoval = true)
     private Set<ShowSeat> showSeats;
+
+    //helper
+    public void addShowSeat(ShowSeat showSeat){
+        this.showSeats.add(showSeat);
+        showSeat.setSeat(this);
+    }
+    public void removeShowSeat(ShowSeat showSeat){
+        this.showSeats.remove(showSeat);
+        showSeat.setSeat(null);
+    }
 }

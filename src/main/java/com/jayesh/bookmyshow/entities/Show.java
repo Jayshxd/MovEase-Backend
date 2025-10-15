@@ -25,9 +25,9 @@ public class Show {
 
     private LocalDate showDate;
     private LocalTime showTime;
-    private double ticketPrice;
+    private Double ticketPrice;
 
-    public Show(LocalDate showDate, LocalTime showTime, double ticketPrice) {
+    public Show(LocalDate showDate, LocalTime showTime, Double ticketPrice) {
         this.showDate = showDate;
         this.showTime = showTime;
         this.ticketPrice = ticketPrice;

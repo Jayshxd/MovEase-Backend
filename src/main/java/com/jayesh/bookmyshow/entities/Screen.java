@@ -19,7 +19,6 @@ public class Screen {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
     private int totalSeats;
 
@@ -32,9 +31,31 @@ public class Screen {
     @JoinColumn(name = "theatre_id")
     private Theatre theatre;
 
-    @OneToMany(mappedBy = "screen",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "screen",cascade = CascadeType.ALL,orphanRemoval = true)
     private Set<Show> shows;
 
-    @OneToMany(mappedBy = "screen",cascade = CascadeType.ALL)
+
+    //if i deleted my screen then all seats will also be removed
+    @OneToMany(mappedBy = "screen",cascade = CascadeType.ALL,orphanRemoval = true)
     private Set<Seat> seats;
+
+
+    //helper method
+    public void addSeat(Seat seat){
+        this.seats.add(seat);
+        seat.setScreen(this);
+    }
+    public void removeSeat(Seat seat){
+        this.seats.remove(seat);
+        seat.setScreen(null);
+    }
+
+    public void addShow(Show show){
+        this.shows.add(show);
+        show.setScreen(this);
+    }
+    public void removeShow(Show show){
+        this.shows.remove(show);
+        show.setScreen(null);
+    }
 }

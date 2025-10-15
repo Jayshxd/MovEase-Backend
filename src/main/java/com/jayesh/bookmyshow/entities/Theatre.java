@@ -3,9 +3,9 @@ package com.jayesh.bookmyshow.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -29,6 +29,16 @@ public class Theatre {
         this.address = address;
     }
 
-    @OneToMany(mappedBy = "theatre",cascade = CascadeType.ALL)
-    private Set<Screen> screens;
+    @OneToMany(mappedBy = "theatre",cascade = CascadeType.ALL,orphanRemoval = true)
+    private Set<Screen> screens = new HashSet<>();
+
+    //helper Methods
+    public void addScreen(Screen screen) {
+        this.screens.add(screen);
+        screen.setTheatre(this);
+    }
+    public void removeScreen(Screen screen) {
+        screens.remove(screen);
+        screen.setTheatre(null);
+    }
 }
