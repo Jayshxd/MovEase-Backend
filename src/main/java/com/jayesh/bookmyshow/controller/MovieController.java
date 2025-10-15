@@ -2,7 +2,9 @@ package com.jayesh.bookmyshow.controller;
 
 import com.jayesh.bookmyshow.dto.request.MovieRequestDto;
 import com.jayesh.bookmyshow.dto.response.MovieResponseDto;
+import com.jayesh.bookmyshow.dto.response.ShowResponseDto;
 import com.jayesh.bookmyshow.service.MovieService;
+import com.jayesh.bookmyshow.service.ShowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import java.util.List;
 public class MovieController {
 
     private final MovieService movieService;
+    private final ShowService showService;
 
     @GetMapping
     public ResponseEntity<List<MovieResponseDto>> get(
@@ -62,5 +65,14 @@ public class MovieController {
         List<MovieResponseDto> res = movieService.createMoviesInBulk(req);
         return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
+
+
+
+    @GetMapping("/{id}/shows")
+    public ResponseEntity<List<ShowResponseDto>> getShows(@PathVariable Long id) {
+        List<ShowResponseDto> response = showService.findAllShowsForAMovie(id);
+        return ResponseEntity.ok(response);
+    }
+
 
 }

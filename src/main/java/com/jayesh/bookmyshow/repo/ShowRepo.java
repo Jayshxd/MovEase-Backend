@@ -26,4 +26,6 @@ public interface ShowRepo extends JpaRepository<Show,Long> {
             @Param("movieId") Long movieId,
             @Param("screenId") Long screenId
     );
+
+    List<Show> findAllShowsByMovieId(Long movieId);
 }

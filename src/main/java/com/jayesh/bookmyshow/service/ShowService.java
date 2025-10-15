@@ -77,11 +77,14 @@ public class ShowService {
 
 
 
-
+    public List<ShowResponseDto> findAllShowsForAMovie(Long id) {
+        return showRepo.findAllShowsByMovieId(id).stream().map(ShowResponseDto::new).toList();
+    }
 
 
 
     //helpers
+
     private Show mapReqToShow(Show show, ShowRequestDto req) {
         Movie movie = movieRepo.findById(req.getMovieId()).orElseThrow(()->new IllegalArgumentException("Movie Not Found"));
         Screen screen = screenRepo.findById(req.getScreenId()).orElseThrow(()->new IllegalArgumentException("Screen Not Found"));
