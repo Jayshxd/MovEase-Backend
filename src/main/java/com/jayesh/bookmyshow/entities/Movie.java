@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -43,7 +44,7 @@ public class Movie {
     }
 
     @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Show> shows;
+    private Set<Show> shows = new HashSet<>();
 
     //helper
     public void addShow(Show show){

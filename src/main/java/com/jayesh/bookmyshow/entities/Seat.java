@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -32,7 +33,7 @@ public class Seat {
     private Screen screen;
 
     @OneToMany(mappedBy = "seat",cascade = CascadeType.ALL,orphanRemoval = true)
-    private Set<ShowSeat> showSeats;
+    private Set<ShowSeat> showSeats = new HashSet<>();
 
     //helper
     public void addShowSeat(ShowSeat showSeat){

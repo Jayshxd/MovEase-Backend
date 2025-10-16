@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -32,12 +33,12 @@ public class Screen {
     private Theatre theatre;
 
     @OneToMany(mappedBy = "screen",cascade = CascadeType.ALL,orphanRemoval = true)
-    private Set<Show> shows;
+    private Set<Show> shows = new HashSet<>();
 
 
     //if i deleted my screen then all seats will also be removed
     @OneToMany(mappedBy = "screen",cascade = CascadeType.ALL,orphanRemoval = true)
-    private Set<Seat> seats;
+    private Set<Seat> seats = new HashSet<>();
 
 
     //helper method

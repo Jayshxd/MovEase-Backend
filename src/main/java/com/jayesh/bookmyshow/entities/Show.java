@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -42,11 +43,11 @@ public class Show {
     private Screen screen;
 
     @OneToMany(mappedBy = "show",cascade = CascadeType.ALL)
-    private Set<Booking> bookings;
+    private Set<Booking> bookings= new HashSet<>();
 
 
     @OneToMany(mappedBy = "show",cascade = CascadeType.ALL)
-    private Set<ShowSeat> showSeats;
+    private Set<ShowSeat> showSeats= new HashSet<>();
 
     //helper
     public void addShowSeat(ShowSeat showSeat) {

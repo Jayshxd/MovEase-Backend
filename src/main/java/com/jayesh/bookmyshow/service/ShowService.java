@@ -2,14 +2,8 @@ package com.jayesh.bookmyshow.service;
 
 import com.jayesh.bookmyshow.dto.request.ShowRequestDto;
 import com.jayesh.bookmyshow.dto.response.ShowResponseDto;
-import com.jayesh.bookmyshow.entities.Movie;
-import com.jayesh.bookmyshow.entities.Screen;
-import com.jayesh.bookmyshow.entities.Show;
-import com.jayesh.bookmyshow.entities.Theatre;
-import com.jayesh.bookmyshow.repo.MovieRepo;
-import com.jayesh.bookmyshow.repo.ScreenRepo;
-import com.jayesh.bookmyshow.repo.ShowRepo;
-import com.jayesh.bookmyshow.repo.TheatreRepo;
+import com.jayesh.bookmyshow.entities.*;
+import com.jayesh.bookmyshow.repo.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -29,28 +23,78 @@ public class ShowService {
     private final MovieRepo movieRepo;
     private final ScreenRepo screenRepo;
     private final TheatreRepo theatreRepo;
+    private final ShowSeatRepo showSeatRepo;
+    private final SeatRepo seatRepo;
 
     public ShowResponseDto createShow(ShowRequestDto req){
         Show show = new Show();
         Show showToSave = mapReqToShow(show, req);
         Show temp= showRepo.save(showToSave);
+        Set<Seat> seats = seatRepo.findAllSeatsByScreenId(req.getScreenId());
+        List<ShowSeat> showSeats =
+                seats.stream().map(
+                        seat -> {
+                            ShowSeat showSeat = new ShowSeat();
+                            showSeat.setStatus("AVAILABLE");
+                            showSeat.setPrice(req.getTicketPrice());
+                            seat.addShowSeat(showSeat);
+                            show.addShowSeat(showSeat);
+                            return showSeat;
+                        }
+                ).toList();
+        showSeatRepo.saveAll(showSeats);
+        System.out.println("Saved Show Seats");
         return new ShowResponseDto(temp);
     }
 
 
     @Transactional
-    public List<ShowResponseDto> createShowsInBulk(List<ShowRequestDto> request) {
-        List<Show> shows = request.stream().map(
-                req ->{
-                    Show show = new Show();
-                    mapReqToShow(show, req);
-                    return show;
-                }
-        ).toList();
-        List<Show> savedShows =showRepo.saveAll(shows);
+    public List<ShowResponseDto> createShowsInBulk(List<ShowRequestDto> requests) {
+
+        // ----------- STEP 1: Saare "pizza bases" (Shows) banao aur save karo -----------
+        // Pehle saare shows banaakar save karlo taaki unko ek unique ID mil jaaye.
+        List<Show> showsToCreate = requests.stream().map(req -> {
+            Show show = new Show();
+            mapReqToShow(show, req); // Tumhara helper method bilkul sahi hai
+            return show;
+        }).toList();
+
+        List<Show> savedShows = showRepo.saveAll(showsToCreate);
+        System.out.println("Saved all " + savedShows.size() + " shows.");
+
+        // ----------- STEP 2: Ab har saved show ke liye "slices" (ShowSeats) kaato -----------
+        // Ek khali list banao jisme hum saare shows ke saare show-seats daalenge.
+        List<ShowSeat> allShowSeatsToSave = new ArrayList<>();
+
+        // Har saved show ke liye loop chalao.
+        for (Show show : savedShows) {
+            // Us show ke screen ki saari seats nikaalo.
+            Set<Seat> seats = seatRepo.findAllSeatsByScreenId(show.getScreen().getId());
+
+            // Har seat ke liye ek ShowSeat banao. Yeh logic tumhare single method jaisa hi hai.
+            List<ShowSeat> showSeatsForThisShow = seats.stream().map(seat -> {
+                ShowSeat showSeat = new ShowSeat();
+                showSeat.setStatus("AVAILABLE");
+                showSeat.setPrice(show.getTicketPrice()); // Show ka price use karo
+                seat.addShowSeat(showSeat);
+                show.addShowSeat(showSeat);
+                return showSeat;
+            }).toList();
+
+            // Is show ke saare ShowSeats ko main list me add kar do.
+            allShowSeatsToSave.addAll(showSeatsForThisShow);
+        }
+
+
+        // ----------- STEP 3: Saare "slices" (ShowSeats) ko ek saath save karo -----------
+        // Aakhir me, saare shows ke saare ShowSeats ko ek hi database call me save kar do.
+        showSeatRepo.saveAll(allShowSeatsToSave);
+        System.out.println("Saved " + allShowSeatsToSave.size() + " show seats in total.");
+
+
+        // ----------- STEP 4: Response bhej do -----------
         return savedShows.stream().map(ShowResponseDto::new).toList();
     }
-
 
     public ShowResponseDto updateShowDetails(Long id ,ShowRequestDto req){
         Show show = showRepo.findById(id).orElseThrow(()->new IllegalArgumentException("Show Not Found"));

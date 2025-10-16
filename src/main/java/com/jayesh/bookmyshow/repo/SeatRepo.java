@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface SeatRepo extends JpaRepository<Seat,Long> {
@@ -24,4 +25,6 @@ public interface SeatRepo extends JpaRepository<Seat,Long> {
             "(:seatType IS NULL OR LOWER(s.seatType) LIKE LOWER(CONCAT('%', :seatType, '%')))")
     List<Seat> findByCriteria(@Param("seatNumber") String seatNumber,
                               @Param("seatType") String seatType);
+
+    Set<Seat> findAllSeatsByScreenId(Long screenId);
 }

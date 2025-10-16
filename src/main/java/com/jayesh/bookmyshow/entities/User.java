@@ -36,7 +36,7 @@ public class User {
     }
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    private Set<Booking> bookings;
+    private Set<Booking> bookings= new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinTable(

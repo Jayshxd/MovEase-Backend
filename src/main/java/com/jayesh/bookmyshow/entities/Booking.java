@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -41,7 +42,7 @@ public class Booking {
 
 
     @OneToMany(mappedBy = "booking",cascade = CascadeType.ALL)
-    private Set<ShowSeat> showSeats;
+    private Set<ShowSeat> showSeats = new HashSet<>();
 
     //helper
     public void addShowSeat(ShowSeat showSeat) {
