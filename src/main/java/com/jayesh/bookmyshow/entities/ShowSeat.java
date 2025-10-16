@@ -20,9 +20,9 @@ public class ShowSeat {
     private Long id;
 
     private String status;
-    private double price;
+    private Double price;
 
-    public ShowSeat(String status, double price) {
+    public ShowSeat(String status, Double price) {
         this.status = status;
         this.price = price;
     }

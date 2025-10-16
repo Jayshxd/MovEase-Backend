@@ -56,4 +56,15 @@ public class ShowController {
         return ResponseEntity.noContent().build();
     }
 
+
+
+
+    /*
+    ShowController mein ek naya @GetMapping("/{showId}/seats") bana.
+
+    Ek naya ShowSeatService bana.
+    Ismein ek method getSeatStatusForShow(Long showId) bana,
+    jo ShowSeat table se us showId ke saare records nikal kar layega.
+     */
+
 }

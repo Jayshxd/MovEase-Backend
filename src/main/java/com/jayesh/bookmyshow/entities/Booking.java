@@ -13,7 +13,6 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-//RequiredArgsConstructor
 @Entity
 @Table(name = "bookings")
 
@@ -43,5 +42,16 @@ public class Booking {
 
     @OneToMany(mappedBy = "booking",cascade = CascadeType.ALL)
     private Set<ShowSeat> showSeats;
+
+    //helper
+    public void addShowSeat(ShowSeat showSeat) {
+        this.showSeats.add(showSeat);
+        showSeat.setBooking(this);
+    }
+
+    public void removeShowSeat(ShowSeat showSeat) {
+        this.showSeats.remove(showSeat);
+        showSeat.setBooking(null);
+    }
 
 }

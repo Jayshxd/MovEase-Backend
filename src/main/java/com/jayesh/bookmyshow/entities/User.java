@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -36,4 +37,22 @@ public class User {
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private Set<Booking> bookings;
+
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles=new HashSet<>();
+
+    //helper
+    public void addBooking(Booking booking) {
+        this.bookings.add(booking);
+        booking.setUser(this);
+    }
+    public void removeBooking(Booking booking) {
+        this.bookings.remove(booking);
+        booking.setUser(null);
+    }
 }

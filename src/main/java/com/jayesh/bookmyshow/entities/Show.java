@@ -48,4 +48,23 @@ public class Show {
     @OneToMany(mappedBy = "show",cascade = CascadeType.ALL)
     private Set<ShowSeat> showSeats;
 
+    //helper
+    public void addShowSeat(ShowSeat showSeat) {
+        this.showSeats.add(showSeat);
+        showSeat.setShow(this);
+    }
+    public void removeShowSeat(ShowSeat showSeat) {
+        this.showSeats.remove(showSeat);
+        showSeat.setShow(null);
+    }
+    public void addBooking(Booking booking) {
+        this.bookings.add(booking);
+        booking.setShow(this);
+    }
+    public void removeBooking(Booking booking) {
+        this.bookings.remove(booking);
+        booking.setShow(null);
+    }
+
+
 }
