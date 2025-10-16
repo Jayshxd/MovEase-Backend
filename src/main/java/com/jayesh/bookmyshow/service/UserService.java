@@ -85,4 +85,9 @@ public class UserService {
     public void deleteUser(Long id) {
         userRepo.deleteById(id);
     }
+
+    public UserResponseDto findUserByid(Long id) {
+        User user = userRepo.findById(id).orElseThrow(()->new EntityNotFoundException("User not found with id "+id));
+        return new UserResponseDto(user,"User Found Successfully");
+    }
 }
