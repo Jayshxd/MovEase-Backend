@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Service
@@ -57,15 +57,40 @@ public class BookingService {
         booking.setTotalAmount(totalAmount+MOVEASE_CONVINIENCE_FEE+gst);
         user.addBooking(booking);
         show.addBooking(booking);
-        Booking savedBooking = bookingRepo.save(booking);
         for(ShowSeat showSeat : usersSeats){
-            showSeat.setBooking(savedBooking);
+            booking.addShowSeat(showSeat);
             showSeat.setStatus("BOOKED");
         }
+        Booking savedBooking = bookingRepo.save(booking);
         showSeatRepo.saveAll(usersSeats);
         return new BookingResponseDto(savedBooking);
     }
 
+
+    @Transactional
+    public String cancelBooking(Long id){
+        Booking booking = bookingRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("Booking not found with id -> "+id));
+        //booking ka removeShowSeat
+        User user = booking.getUser();
+        if(user==null){
+            throw new RuntimeException("USER IS NULL >> IN BOOKINGS TABLE");
+        }
+        Show show = booking.getShow();
+        if(show==null){
+            throw new RuntimeException("SHOW IS NULL >> IN BOOKINGS TABLE");
+        }
+
+        Iterator<ShowSeat> iterator = booking.getShowSeats().iterator();
+        while (iterator.hasNext()){
+            ShowSeat showSeat = iterator.next();
+            showSeat.setStatus("AVAILABLE");
+            showSeat.setBooking(null);
+            iterator.remove(); // yeh safe hai, ye hi karna chahiye
+        }
+        showSeatRepo.saveAll(booking.getShowSeats());
+        booking.setBookingStatus("CANCELLED");
+        return "Booking has been cancelled";
+    }
 
 
 }

@@ -6,10 +6,8 @@ import com.jayesh.bookmyshow.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/bookings")
@@ -20,5 +18,9 @@ public class BookingController {
     public ResponseEntity<BookingResponseDto> post(@RequestBody BookingRequestDto value) {
         BookingResponseDto bookingResponseDto = bookingService.createBooking(value);
         return ResponseEntity.status(HttpStatus.CREATED).body(bookingResponseDto);
+    }
+    @PostMapping("/{id}")
+    public String cancelBooking(@PathVariable Long id) {
+        return bookingService.cancelBooking(id);
     }
 }
