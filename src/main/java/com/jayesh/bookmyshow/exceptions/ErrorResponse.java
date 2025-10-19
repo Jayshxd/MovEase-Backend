@@ -14,9 +14,9 @@ import java.util.Date;
 //error ka response iss type ka dikhe
 public class ErrorResponse {
     private Date timestamp;
-    private String message;
     private int statusCode;
     private String error;
+    private String message;
     private String path;
 
 }

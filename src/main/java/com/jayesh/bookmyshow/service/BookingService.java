@@ -6,6 +6,8 @@ import com.jayesh.bookmyshow.entities.Booking;
 import com.jayesh.bookmyshow.entities.Show;
 import com.jayesh.bookmyshow.entities.ShowSeat;
 import com.jayesh.bookmyshow.entities.User;
+import com.jayesh.bookmyshow.exceptions.ResourceNotFoundException;
+import com.jayesh.bookmyshow.exceptions.SeatUnavailableException;
 import com.jayesh.bookmyshow.repo.BookingRepo;
 import com.jayesh.bookmyshow.repo.ShowRepo;
 import com.jayesh.bookmyshow.repo.ShowSeatRepo;
@@ -32,23 +34,23 @@ public class BookingService {
     public BookingResponseDto createBooking(BookingRequestDto bookingRequestDto) {
         User user = userRepo
                 .findById(bookingRequestDto.getUserId())
-                .orElseThrow(() -> new EntityNotFoundException("User not found with id -> "+bookingRequestDto.getUserId()));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id -> "+bookingRequestDto.getUserId()));
 
         Show show = showRepo.findById(bookingRequestDto.getShowId())
-                .orElseThrow(() -> new EntityNotFoundException("Show not found with id -> "+bookingRequestDto.getShowId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Show not found with id -> "+bookingRequestDto.getShowId()));
 
         List<Long> usersSeatsIds = bookingRequestDto.getShowSeatIds();
         List<ShowSeat> usersSeats = showSeatRepo.findAllById(usersSeatsIds);
 
 
         if(usersSeatsIds.size()!=usersSeats.size()){
-            throw new EntityNotFoundException("One or more requested seats were not found in the database.");
+            throw new ResourceNotFoundException("One or more requested seats were not found in the database.");
         }
 
         double totalAmount = 0;
         for(ShowSeat showSeat : usersSeats) {
             if(!showSeat.getStatus().equals("AVAILABLE")) {
-                throw new EntityNotFoundException(showSeat.getId()+" This Seat is Already Booked for this show "+showSeat.getShow().getId());
+                throw new SeatUnavailableException(showSeat.getId()+" This Seat is Already Booked for this show "+showSeat.getShow().getId());
             }
             totalAmount = showSeat.getPrice()+totalAmount;
         }
@@ -71,7 +73,7 @@ public class BookingService {
 
     @Transactional
     public String cancelBooking(Long id){
-        Booking booking = bookingRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("Booking not found with id -> "+id));
+        Booking booking = bookingRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Booking not found with id -> "+id));
         //booking ka removeShowSeat
         User user = booking.getUser();
         if(user==null){
