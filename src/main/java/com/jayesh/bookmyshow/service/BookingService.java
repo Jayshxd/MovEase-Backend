@@ -40,6 +40,7 @@ public class BookingService {
         List<Long> usersSeatsIds = bookingRequestDto.getShowSeatIds();
         List<ShowSeat> usersSeats = showSeatRepo.findAllById(usersSeatsIds);
 
+
         if(usersSeatsIds.size()!=usersSeats.size()){
             throw new EntityNotFoundException("One or more requested seats were not found in the database.");
         }
@@ -61,6 +62,7 @@ public class BookingService {
             booking.addShowSeat(showSeat);
             showSeat.setStatus("BOOKED");
         }
+        booking.setBookingStatus("CONFIRMED");
         Booking savedBooking = bookingRepo.save(booking);
         showSeatRepo.saveAll(usersSeats);
         return new BookingResponseDto(savedBooking);

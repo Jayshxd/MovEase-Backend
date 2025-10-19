@@ -11,6 +11,7 @@ import com.jayesh.bookmyshow.service.ShowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -31,18 +32,19 @@ public class ScreenController {
         return ResponseEntity.ok(res);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<ScreenResponseDto> put(@RequestBody ScreenRequestDto req, @PathVariable Long id) {
         ScreenResponseDto res = screenService.updateByPut(id, req);
         return ResponseEntity.ok(res);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}")
     public ResponseEntity<ScreenResponseDto> patch(@RequestBody ScreenRequestDto req, @PathVariable Long id) {
         ScreenResponseDto res = screenService.updateScreenDetails(id, req);
         return ResponseEntity.ok(res);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         screenService.deleteScreen(id);
@@ -60,11 +62,14 @@ public class ScreenController {
         List<SeatResponseDto> res  = seatService.findAllSeatsForAScreen(id,seatNumber,seatType);
         return ResponseEntity.ok(res);
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{id}/seats")
     public ResponseEntity<SeatResponseDto> createSeat(@PathVariable Long id, @RequestBody SeatRequestDto req) {
         SeatResponseDto res = seatService.createSeat(id,req);
         return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{id}/seats/bulk")
     public ResponseEntity<List<SeatResponseDto>> createSeat(@PathVariable Long id, @RequestBody List<SeatRequestDto> req) {
         List<SeatResponseDto> res = seatService.createSeatsInBulk(id, req);

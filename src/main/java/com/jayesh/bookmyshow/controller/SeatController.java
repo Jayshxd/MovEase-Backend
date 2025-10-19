@@ -5,6 +5,7 @@ import com.jayesh.bookmyshow.dto.response.SeatResponseDto;
 import com.jayesh.bookmyshow.service.SeatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,18 +25,21 @@ public class SeatController {
         return ResponseEntity.ok(res);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<SeatResponseDto> updateSeat(@PathVariable Long id,@RequestBody SeatRequestDto seatRequestDto){
         SeatResponseDto res = seatService.updateSeat(id,seatRequestDto);
         return ResponseEntity.ok(res);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}")
     public ResponseEntity<SeatResponseDto> updateSeatDetails(@PathVariable Long id, @RequestBody SeatRequestDto seatRequestDto){
         SeatResponseDto res = seatService.updateSeatDetails(id,seatRequestDto);
         return ResponseEntity.ok(res);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         seatService.deleteSeat(id);

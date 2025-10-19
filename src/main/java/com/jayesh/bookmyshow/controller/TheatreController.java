@@ -11,6 +11,7 @@ import com.jayesh.bookmyshow.service.TheatreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -40,6 +41,7 @@ public class TheatreController {
         return ResponseEntity.ok(res);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<TheatreResponseDto> createATheatre(@RequestBody TheatreRequestDto req) {
         TheatreResponseDto res = theatreService.createTheatre(req);
@@ -47,24 +49,26 @@ public class TheatreController {
 
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/bulk")
     public ResponseEntity<List<TheatreResponseDto>> createTheatresInBulk(@RequestBody List<TheatreRequestDto> req) {
         List<TheatreResponseDto> res = theatreService.createTheatresInBulk(req);
         return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<TheatreResponseDto> put(@PathVariable Long id,@RequestBody TheatreRequestDto req) {
         TheatreResponseDto res  = theatreService.updateTheatreByPut(id,req);
         return ResponseEntity.ok(res);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}")
     public ResponseEntity<TheatreResponseDto> patch(@PathVariable Long id,@RequestBody TheatreRequestDto req) {
         TheatreResponseDto res  = theatreService.updateTheatreDetails(id,req);
         return ResponseEntity.ok(res);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         theatreService.deleteTheatre(id);
@@ -85,6 +89,9 @@ public class TheatreController {
         List<ScreenResponseDto> res = screenService.getAllScreensForThisTheatre(id);
         return ResponseEntity.ok(res);
     }
+
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{theatreId}/screens")
     public ResponseEntity<ScreenResponseDto> createScreenForTheatre(
             @PathVariable Long theatreId,
@@ -94,6 +101,8 @@ public class TheatreController {
         ScreenResponseDto res = screenService.createAScreen(theatreId, req);
         return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{theatreId}/screens/bulk")
     public ResponseEntity<List<ScreenResponseDto>> createScreensInBulkForTheatre(
             @PathVariable Long theatreId,
@@ -103,6 +112,7 @@ public class TheatreController {
         return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}/screens")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         screenService.deleteAllScreensOfATheatre(id);

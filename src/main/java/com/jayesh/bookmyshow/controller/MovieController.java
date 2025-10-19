@@ -8,6 +8,7 @@ import com.jayesh.bookmyshow.service.ShowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -20,6 +21,8 @@ public class MovieController {
 
     private final MovieService movieService;
     private final ShowService showService;
+
+
 
     @GetMapping
     public ResponseEntity<List<MovieResponseDto>> get(
@@ -34,19 +37,20 @@ public class MovieController {
         return ResponseEntity.ok(res);
     }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<MovieResponseDto> post(@RequestBody MovieRequestDto req) {
         MovieResponseDto res = movieService.createMovie(req);
         return ResponseEntity.status(HttpStatus.CREATED).body(res);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<MovieResponseDto> put(@PathVariable Long id, @RequestBody MovieRequestDto req) {
         MovieResponseDto res = movieService.updateByPut(id,req);
         return ResponseEntity.ok(res);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         movieService.deleteMovie(id);
@@ -60,6 +64,7 @@ public class MovieController {
 
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/bulk")
     public ResponseEntity<List<MovieResponseDto>> post(@RequestBody List<MovieRequestDto> req) {
         List<MovieResponseDto> res = movieService.createMoviesInBulk(req);

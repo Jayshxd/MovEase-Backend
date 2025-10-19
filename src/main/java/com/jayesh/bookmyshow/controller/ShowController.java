@@ -6,6 +6,7 @@ import com.jayesh.bookmyshow.service.ShowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -32,24 +33,28 @@ public class ShowController {
 
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<ShowResponseDto> put(@RequestBody ShowRequestDto request){
         ShowResponseDto response = showService.createShow(request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/bulk")
     public ResponseEntity<List<ShowResponseDto>> put(@RequestBody List<ShowRequestDto> request){
         List<ShowResponseDto> response = showService.createShowsInBulk(request);
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}")
     public ResponseEntity<ShowResponseDto> updateShowDetails(@PathVariable Long id,@RequestBody ShowRequestDto request) {
         ShowResponseDto response = showService.updateShowDetails(id, request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         showService.deleteAShow(id);
