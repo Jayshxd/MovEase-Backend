@@ -40,7 +40,8 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider(userDetailsService);
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         return daoAuthenticationProvider;
     }
@@ -58,7 +59,13 @@ public class SecurityConfig {
                 .exceptionHandling(exception-> exception.authenticationEntryPoint(unauthorizedHandler))
                 .authorizeHttpRequests(
                 auth->
-                        auth.requestMatchers("/public/**","/movies","/theatres","/shows").permitAll()
+                        auth.requestMatchers(
+                                        // -- Swagger UI v3 (OpenAPI)
+                                        "/v3/api-docs/**",
+                                        "/swagger-ui/**",
+                                        "/swagger-ui.html"
+                                ).permitAll()
+                                .requestMatchers("/public/**","/movies","/theatres","/shows","/docs","/swagger-ui/index.html").permitAll()
                                 .requestMatchers("/users/auth/**").permitAll()
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
