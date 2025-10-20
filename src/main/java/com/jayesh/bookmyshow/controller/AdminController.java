@@ -1,6 +1,6 @@
 package com.jayesh.bookmyshow.controller;
 
-import com.jayesh.bookmyshow.dto.request.RoleRequestController;
+import com.jayesh.bookmyshow.dto.request.RoleRequestDto;
 import com.jayesh.bookmyshow.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -37,7 +37,7 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/assign")
-    public ResponseEntity<?> assignRoleToUser(@RequestBody RoleRequestController roleRequestController) {
+    public ResponseEntity<?> assignRoleToUser(@RequestBody RoleRequestDto roleRequestController) {
         String response = userService.assignRoleToUser(roleRequestController);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

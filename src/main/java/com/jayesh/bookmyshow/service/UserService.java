@@ -1,7 +1,7 @@
 package com.jayesh.bookmyshow.service;
 
 import com.jayesh.bookmyshow.dto.request.LoginRequestDto;
-import com.jayesh.bookmyshow.dto.request.RoleRequestController;
+import com.jayesh.bookmyshow.dto.request.RoleRequestDto;
 import com.jayesh.bookmyshow.dto.request.UserRequestDto;
 import com.jayesh.bookmyshow.dto.response.LoginResponseDto;
 import com.jayesh.bookmyshow.dto.response.UserResponseDto;
@@ -102,7 +102,7 @@ public class UserService {
         return new UserResponseDto(user,"User Found Successfully");
     }
 
-    public String assignRoleToUser(RoleRequestController roleRequestController) {
+    public String assignRoleToUser(RoleRequestDto roleRequestController) {
         User user = userRepo.findById(roleRequestController.getUserId()).orElseThrow(()->new EntityNotFoundException("User not found with id "+roleRequestController.getUserId()));
         Set<Role> roles = user.getRoles();
         for(String roleName : roleRequestController.getRoles()) {
