@@ -30,10 +30,14 @@ public class SwaggerConfig {
                 .info(
                 new Info().title("MovEase Backend APIs")
                         .version("1.2")
-                .description("Version 1.0 : Had APIs that were working fine" +
-                        "Version 1.1 : Added basic security" +
-                        "Version 1.2 : Added Role Based Access Control and JWT Authentication" +
-                        "These are few main APIs that are working more detailed are in progress..")
+                        .description("""
+Version 1.0 : Basic APIs working fine.
+Version 1.1 : Added Basic Security.
+Version 1.2 : Added Role Based Access Control and JWT Authentication.
+
+These are the major stable APIs. More detailed modules are in progress.
+""")
+
                         .contact(
                                 new Contact()
                                         .name("Jayesh Hiwarkar")
