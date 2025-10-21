@@ -130,4 +130,3 @@ To get a local copy up and running, follow these simple steps.
 - GitHub: [@Jayshxd](https://github.com/Jayshxd)
 
 ---
-*This README was generated with the help of GitHub Copilot.*
