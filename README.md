@@ -2,7 +2,7 @@
 
 MovEase-Backend is a robust and feature-rich backend system for a modern movie ticket booking application, similar to BookMyShow. It provides a complete set of RESTful APIs to manage movies, theatres, shows, bookings, and user authentication. The project is built with Spring Boot and follows best practices for building scalable and maintainable web applications.
 
-## ✨ Features
+## </> Features
 
 ### User Features
 - **User Authentication:** Secure user registration and login with JWT (JSON Web Tokens).
@@ -34,7 +34,7 @@ MovEase-Backend is a robust and feature-rich backend system for a modern movie t
 - **Build Tool:** Maven
 - **Utilities:** Lombok, Spring Boot DevTools
 
-## 🏗️ Architecture
+## </> Architecture
 
 The application follows a classic N-tier architecture, separating concerns into different layers:
 
@@ -44,7 +44,7 @@ The application follows a classic N-tier architecture, separating concerns into 
 - **Entity Layer:** Defines the data model and database schema.
 - **Security Layer:** Manages authentication and authorization using Spring Security and JWT.
 
-## 🗄️ Database Schema
+## </> Database Schema
 
 The database schema is designed to be normalized and efficient. The main entities and their relationships are as follows:
 
@@ -58,7 +58,7 @@ The database schema is designed to be normalized and efficient. The main entitie
 - `ShowSeat`: Represents the state of a seat for a particular show (e.g., available, booked).
 - `Booking`: Stores booking details and has relationships with `User`, `Show`, and `ShowSeat`.
 
-## 🚀 API Endpoints
+## </> API Endpoints
 
 The application provides a rich set of RESTful APIs. You can explore and test the APIs using the Swagger UI at `http://localhost:8080/swagger-ui.html` after running the application.
 
@@ -82,7 +82,7 @@ Here's a summary of the available endpoints:
 
 ... and many more for managing screens, seats, and other resources.
 
-## ⚙️ Getting Started
+## </> Getting Started
 
 To get a local copy up and running, follow these simple steps.
 
@@ -123,7 +123,7 @@ To get a local copy up and running, follow these simple steps.
    ```
    The application will start on `http://localhost:8080`.
 
-## 👤 Author
+## </> Author
 
 **Jayesh**
 
