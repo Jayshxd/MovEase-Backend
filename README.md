@@ -22,7 +22,7 @@ MovEase-Backend is a robust and feature-rich backend system for a modern movie t
 - **CRUD Operations for Shows:** Schedule and manage movie showtimes.
 - **Manage Bookings:** View all bookings and their statuses.
 
-## 🛠️ Technologies & Tools
+## </> Technologies & Tools
 
 - **Framework:** Spring Boot 3.3.1
 - **Language:** Java 17
